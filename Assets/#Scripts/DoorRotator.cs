@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoorRotator : MonoBehaviour
 {
-    public bool Openingdoor;
+    public bool isOpening;
     public Transform target;
     public float speed = 100f;
   
@@ -17,7 +17,7 @@ public class DoorRotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Openingdoor)
+        if (isOpening)
         {
             Vector3 targetPosition = new Vector3(target.position.x,this.transform.position.y,target.position.z);
             transform.LookAt(targetPosition);

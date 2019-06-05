@@ -28,14 +28,23 @@ public class ControllerGrabObject : MonoBehaviour
     // 1
     public void OnTriggerEnter(Collider other)
     {
-        SetCollidingObject(other);
-
+        if (other.CompareTag("Door") || other.CompareTag("Grabable"))
+        {
+            SetCollidingObject(other);
+            Debug.Log(other.transform.name);
+        }
+        
     }
 
     // 2
     public void OnTriggerStay(Collider other)
     {
-        SetCollidingObject(other);
+        if (other.CompareTag("Door") || other.CompareTag("Grabable"))
+        {
+            SetCollidingObject(other);
+            Debug.Log(other.transform.name);
+        }
+        
     }
 
     // 3
@@ -91,29 +100,35 @@ public class ControllerGrabObject : MonoBehaviour
         {
             if (collidingObject)
             {
-                if (collidingObject.GetComponent<Rigidbody>())
-                {
-                    GrabObject();
-                }
                 if (collidingObject.CompareTag("Door"))
                 {
-                    collidingObject.transform.parent.transform.parent.GetComponent<DoorRotator>().Openingdoor = true;
+                    Debug.Log("can open");
+                    collidingObject.transform.parent.transform.parent.GetComponent<DoorRotator>().isOpening = true;
+                    collidingObject.transform.parent.transform.parent.GetComponent<DoorRotator>().target = gameObject.transform;
                 }
+                Debug.Log("can interact");
+                if (collidingObject.GetComponent<Rigidbody>() || collidingObject.CompareTag("Grabable"))
+                {
+                    GrabObject();
+                    Debug.Log("can pickup");
+                }
+
             }
         }
 
         // 2
         if (grabAction.GetLastStateUp(handType))
         {
+            if (collidingObject.CompareTag("Door"))
+            {
+                collidingObject.transform.parent.transform.parent.GetComponent<DoorRotator>().isOpening = false;
+                collidingObject.transform.parent.transform.parent.GetComponent<DoorRotator>().target = null;
+            }
             if (objectInHand)
             {
                 ReleaseObject();
-                if (objectInHand.CompareTag("Door"))
-                {
-                    objectInHand.transform.parent.transform.parent.GetComponent<DoorRotator>().Openingdoor = false;
-                }
-            }
 
+            }
         }
 
     }
