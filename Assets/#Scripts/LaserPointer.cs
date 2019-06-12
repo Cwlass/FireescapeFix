@@ -55,8 +55,10 @@ public class LaserPointer : MonoBehaviour
                 ShowLaser(hit);
                 // 1
 
-                // 3
-                shouldTeleport = true;
+                if (hit.transform.CompareTag("Walkable"))
+                {
+                    shouldTeleport = true;
+                }
 
             }
         }
